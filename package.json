@@ -2,7 +2,7 @@
 	"name": "com.zenasprime.poolboy",
 	"version": "0.0.1",
 	"displayName": "PoolBoy",
-	"description": "A simple object pooling system for Unity",
+	"description": "A simple object pooling system for Unity.",
 	"unity": "2022.3",
 	"dependencies": {},
 	"author": {
