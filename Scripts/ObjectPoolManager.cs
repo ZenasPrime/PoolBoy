@@ -37,6 +37,16 @@ namespace ZenTools.PoolBoy
         public virtual GameObject GetObject(GameObject prefab) { return null; }
         
         /// <summary>
+        /// Retrieves a GameObject from the pool based on a name.
+        /// This method should be overridden by subclasses to return an instance of the GameObject
+        /// that matches the provided name.
+        /// If the pool does not have an available object of the requested type, this method may return null.
+        /// </summary>
+        /// <param name="name">The name used to identify the type of object to retrieve from the pool.</param>
+        /// <returns> A GameObject from the pool that matches the name or null if no object is available.</returns>
+        public virtual GameObject GetObject(string name) { return null; }
+        
+        /// <summary>
         /// Returns a GameObject to the pool.
         /// Subclasses should override this method to implement the logic for returning objects to the pool,
         /// such as deactivating them and placing them back into a collection for future use.

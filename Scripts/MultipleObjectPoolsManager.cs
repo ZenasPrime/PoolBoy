@@ -57,6 +57,25 @@ namespace ZenTools.PoolBoy
                 return null;
             }
         }
+        
+        /// <summary>
+        /// Retrieves an available GameObject from the pool based on the name of the prefab. If the pool
+        /// exists, an object is returned; otherwise, an error is logged and null is returned.
+        /// </summary>
+        /// <param name="prefabName">The name of the prefab to get from the pool.</param>
+        public override GameObject GetObject(string prefabName)
+        {
+            foreach (GameObject item in _pools.Keys)
+            {
+                if (item.name == prefabName)
+                {
+                    return GetObject(item);
+                }
+            }
+            
+            Debug.LogWarning($"No pool found for prefab named '{name}'.");
+            return null;
+        }
 
         /// <summary>
         /// Returns a GameObject to its corresponding pool based on the prefab. If the pool exists,
