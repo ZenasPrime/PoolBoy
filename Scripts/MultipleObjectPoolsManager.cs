@@ -17,6 +17,7 @@ namespace ZenTools.PoolBoy
         [Tooltip("Initial number of objects to instantiate for each type of prefab in their respective pools.")]
         [SerializeField] private int initialCount = 10; // Initial count for each pool
         private Dictionary<GameObject, GameObjectPool> _pools;
+        private Dictionary<string, GameObjectPool> _nameToPoolMap;
 
         void Start()
         {
@@ -31,11 +32,13 @@ namespace ZenTools.PoolBoy
         private void InitializePools()
         {
             _pools = new Dictionary<GameObject, GameObjectPool>();
+            _nameToPoolMap = new Dictionary<string, GameObjectPool>();
 
             foreach (var itemPrefab in itemPrefabs)
             {
                 var pool = new GameObjectPool(itemPrefab, initialCount, transform);
                 _pools.Add(itemPrefab, pool);
+                _nameToPoolMap.Add(itemPrefab.name, pool); // Map prefab name to pool
             }
         }
 
@@ -65,16 +68,15 @@ namespace ZenTools.PoolBoy
         /// <param name="prefabName">The name of the prefab to get from the pool.</param>
         public override GameObject GetObject(string prefabName)
         {
-            foreach (GameObject item in _pools.Keys)
+            if (_nameToPoolMap.TryGetValue(prefabName, out var pool))
             {
-                if (item.name == prefabName)
-                {
-                    return GetObject(item);
-                }
+                return pool.Get();
             }
-            
-            Debug.LogWarning($"No pool found for prefab named '{name}'.");
-            return null;
+            else
+            {
+                Debug.LogWarning($"No pool found for prefab named '{prefabName}'.");
+                return null;
+            }
         }
 
         /// <summary>
