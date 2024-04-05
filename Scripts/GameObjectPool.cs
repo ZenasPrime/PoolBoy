@@ -41,16 +41,12 @@ namespace ZenTools.PoolBoy
         /// <summary>
         /// Instantiates a new GameObject from the prefab, optionally activates it, and adds it to the pool.
         /// </summary>
-        /// <param name="setActive">Indicates whether the new object should be activated immediately upon creation.</param>
         /// <returns>The instantiated GameObject.</returns>
-        private GameObject AddObject(bool setActive = false)
+        private GameObject AddObject()
         {
             var newObject = Object.Instantiate(_prefab, _parentTransform);
-            newObject.SetActive(setActive);
-            if (!setActive)
-            {
-                _pool.Enqueue(newObject);
-            }
+            newObject.SetActive(false);
+            _pool.Enqueue(newObject);
             return newObject;
         }
 
@@ -62,7 +58,8 @@ namespace ZenTools.PoolBoy
         {
             if (_pool.Count == 0)
             {
-                AddObject(true);
+                Debug.Log("Pool is empty. Adding new object.");
+                AddObject();
             }
 
             var obj = _pool.Dequeue();
