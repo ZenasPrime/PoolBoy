@@ -37,7 +37,7 @@ namespace ZenTools.PoolBoy
         /// a new one may be instantiated depending on the implementation of the GameObjectPool.
         /// </summary>
         /// <returns>An instance of the pooled GameObject, ready for use.</returns>
-        public new GameObject GetObject()
+        public override GameObject GetObject()
         {
             return _objectPool.Get();
         }
@@ -47,7 +47,7 @@ namespace ZenTools.PoolBoy
         // /// should be called instead of destroying the object when it is no longer needed.
         // /// </summary>
         // /// <param name="item">The GameObject to return to the pool.</param>
-        public new void ReturnObject(GameObject item)
+        public override void ReturnObject(GameObject item)
         {
             _objectPool.ReturnToPool(item);
         }
@@ -56,7 +56,7 @@ namespace ZenTools.PoolBoy
         /// Returns all active objects to the pool. This is useful for resetting the scene
         /// or cleaning up when the game state changes.
         /// </summary>
-        public new void ReturnAllObjects()
+        public override void ReturnAllObjects()
         {
             _objectPool.ReturnAllToPool();
         }

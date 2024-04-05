@@ -48,7 +48,7 @@ namespace ZenTools.PoolBoy
         /// </summary>
         /// <param name="itemPrefab">The prefab of the GameObject to retrieve from the pool.</param>
         /// <returns>An instance of the requested GameObject, or null if the pool does not exist.</returns>
-        public GameObject GetObject(GameObject itemPrefab)
+        public override GameObject GetObject(GameObject itemPrefab)
         {
             if (_pools.TryGetValue(itemPrefab, out var pool))
             {

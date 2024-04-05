@@ -47,6 +47,7 @@ namespace ZenTools.PoolBoy
             var newObject = Object.Instantiate(_prefab, _parentTransform);
             newObject.SetActive(false);
             _pool.Enqueue(newObject);
+            //Debug.Log($"Adding new object {newObject} to pool and returning it to the caller. {_pool.Count} objects in pool.");
             return newObject;
         }
 
