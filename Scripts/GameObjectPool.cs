@@ -45,6 +45,7 @@ namespace ZenTools.PoolBoy
         private GameObject AddObject()
         {
             var newObject = Object.Instantiate(_prefab, _parentTransform);
+            newObject.name = _prefab.name;
             newObject.SetActive(false);
             _pool.Enqueue(newObject);
             //Debug.Log($"Adding new object {newObject} to pool and returning it to the caller. {_pool.Count} objects in pool.");

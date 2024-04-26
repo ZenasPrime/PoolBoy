@@ -47,9 +47,9 @@ namespace ZenTools.PoolBoy
         // /// should be called instead of destroying the object when it is no longer needed.
         // /// </summary>
         // /// <param name="item">The GameObject to return to the pool.</param>
-        public override void ReturnObject(GameObject item)
+        public override void ReturnObject(GameObject gameObjectToReturn)
         {
-            _objectPool.ReturnToPool(item);
+            _objectPool.ReturnToPool(gameObjectToReturn);
         }
         
         /// <summary>

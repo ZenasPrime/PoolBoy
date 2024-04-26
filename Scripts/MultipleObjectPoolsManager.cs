@@ -46,11 +46,11 @@ namespace ZenTools.PoolBoy
         /// Retrieves an available GameObject from the specified pool. If the pool for the requested
         /// prefab exists, an object is returned; otherwise, null is returned and an error is logged.
         /// </summary>
-        /// <param name="itemPrefab">The prefab of the GameObject to retrieve from the pool.</param>
+        /// <param name="poolName">The name of the pool to retrieve the object from.</param>
         /// <returns>An instance of the requested GameObject, or null if the pool does not exist.</returns>
-        public override GameObject GetObject(GameObject itemPrefab)
+        public override GameObject GetObjectFromPool(string poolName)
         {
-            if (_pools.TryGetValue(itemPrefab, out var pool))
+            if (_nameToPoolMap.TryGetValue(poolName, out var pool))
             {
                 return pool.Get();
             }
@@ -60,40 +60,22 @@ namespace ZenTools.PoolBoy
                 return null;
             }
         }
-        
-        /// <summary>
-        /// Retrieves an available GameObject from the pool based on the name of the prefab. If the pool
-        /// exists, an object is returned; otherwise, an error is logged and null is returned.
-        /// </summary>
-        /// <param name="prefabName">The name of the prefab to get from the pool.</param>
-        public override GameObject GetObject(string prefabName)
-        {
-            if (_nameToPoolMap.TryGetValue(prefabName, out var pool))
-            {
-                return pool.Get();
-            }
-            else
-            {
-                Debug.LogWarning($"No pool found for prefab named '{prefabName}'.");
-                return null;
-            }
-        }
 
         /// <summary>
         /// Returns a GameObject to its corresponding pool based on the prefab. If the pool exists,
         /// the object is successfully returned; otherwise, an error is logged.
         /// </summary>
-        /// <param name="itemPrefab">The prefab of the GameObject being returned.</param>
-        /// <param name="item">The GameObject to return to the pool.</param>
-        public void ReturnObject(GameObject itemPrefab, GameObject item)
+        /// <param name="poolName">The name of the object type to return to the pool.</param>
+        /// <param name="gameObjectToReturn">The GameObject to return to the pool.</param>
+        public override void ReturnObjectToPool(string poolName, GameObject gameObjectToReturn)
         {
-            if (_pools.TryGetValue(itemPrefab, out var pool))
+            if (_nameToPoolMap.TryGetValue(poolName, out var pool))
             {
-                pool.ReturnToPool(item);
+                pool.ReturnToPool(gameObjectToReturn);
             }
             else
             {
-                Debug.LogError("Pool for the returned item does not exist.");
+                Debug.LogError($"No pool found named '{poolName}'.");
             }
         }
         
@@ -101,7 +83,7 @@ namespace ZenTools.PoolBoy
         /// Returns all active objects to their respective pools. Useful for bulk operations like
         /// scene resets or game state changes, ensuring all managed objects are properly reclaimed.
         /// </summary>
-        public new void ReturnAllObjects()
+        public override void ReturnAllObjects()
         {
             foreach (var pool in _pools.Values)
             {
