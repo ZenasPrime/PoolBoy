@@ -48,7 +48,7 @@ namespace ZenTools.PoolBoy
             newObject.name = _prefab.name;
             newObject.SetActive(false);
             _pool.Enqueue(newObject);
-            //Debug.Log($"Adding new object {newObject} to pool and returning it to the caller. {_pool.Count} objects in pool.");
+            Debug.Log($"Adding new object {newObject} to pool and returning it to the caller. {_pool.Count} objects in pool.");
             return newObject;
         }
 
@@ -65,8 +65,15 @@ namespace ZenTools.PoolBoy
             }
 
             var obj = _pool.Dequeue();
+            if (obj.activeSelf)
+            {
+                Debug.LogWarning($"Attempted to get an already active object {obj.name} from pool.");
+                return AddObject();
+            }
+            
             obj.SetActive(true);
             _activeObjects.Add(obj);
+            Debug.Log($"Getting object {obj.name} from pool. {_pool.Count} objects remaining in pool.");
             return obj;
         }
 
@@ -76,9 +83,16 @@ namespace ZenTools.PoolBoy
         /// <param name="objectToReturn">The GameObject to return to the pool.</param>
         public void ReturnToPool(GameObject objectToReturn)
         {
+            if (!objectToReturn.activeSelf)
+            {
+                Debug.LogWarning($"Attempted to return an already inactive object {objectToReturn.name} to pool.");
+                return;
+            }
+            
             objectToReturn.SetActive(false);
             _pool.Enqueue(objectToReturn);
             _activeObjects.Remove(objectToReturn);
+            Debug.Log($"Returned object {objectToReturn.name} to pool. {_pool.Count} objects in pool.");
         }
         
         /// <summary>
@@ -93,6 +107,7 @@ namespace ZenTools.PoolBoy
                 _pool.Enqueue(activeObject);
             }
             _activeObjects.Clear();
+            Debug.Log($"Returned all active objects to pool. {_pool.Count} objects in pool.");
         }
     }
 }
