@@ -19,7 +19,7 @@ namespace ZenTools.PoolBoy
         private Dictionary<GameObject, GameObjectPool> _pools;
         private Dictionary<string, GameObjectPool> _nameToPoolMap;
 
-        void Start()
+        void Awake()
         {
             InitializePools();
         }
