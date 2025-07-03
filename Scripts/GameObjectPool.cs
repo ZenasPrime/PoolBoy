@@ -44,7 +44,7 @@ namespace ZenTools.PoolBoy
         /// <returns>The instantiated GameObject.</returns>
         private GameObject AddObject()
         {
-            var newObject = Object.Instantiate(_prefab, _parentTransform);
+            var newObject = Object.Instantiate(_prefab, _parentTransform.position, _prefab.transform.rotation, _parentTransform);
             newObject.name = _prefab.name;
             newObject.SetActive(false);
             _pool.Enqueue(newObject);
@@ -74,6 +74,20 @@ namespace ZenTools.PoolBoy
             obj.SetActive(true);
             _activeObjects.Add(obj);
             Debug.Log($"Getting object {obj.name} from pool. {_pool.Count} objects remaining in pool.");
+            return obj;
+        }
+        
+        /// <summary>
+        /// Retrieves a GameObject from the pool, setting its position and rotation.
+        /// </summary>
+        /// <param name="position"> The position to set for the GameObject.</param>
+        /// <param name="rotation"> The rotation to set for the GameObject.</param>
+        /// <returns></returns>
+        public GameObject Get(Vector3 position, Quaternion rotation)
+        {
+            var obj = Get();
+            obj.transform.position = position;
+            obj.transform.rotation = rotation;
             return obj;
         }
 
